@@ -1,7 +1,5 @@
 # hipo_asmm_server
 
-# node_sysfs_gpio
-
 A Web GUI server for asmm device driver
 
 ## Installation
