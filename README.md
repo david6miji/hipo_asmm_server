@@ -20,7 +20,6 @@ run server
 $ DEBUG=app:* npm start
 ```
 
-
 ## LICENSE
 
 MIT license. See the LICENSE file for details.

@@ -1,13 +1,98 @@
 <section>
 
   <h1>ASMM - AC Servo Motor Manager Test</h1>
-  <hr style="border: solid 1px red;">
-  <h2> 정보 대기 중 </h2>
-  <hr style="border: solid 1px blue;">
-
+  <hr style="border: solid 1px red;margin-top:0;padding-top:0;">
+  <h2> 조작 </h2>
+  <hr style="border: solid 1px blue;margin-top:0;padding-top:0;">
+  
+  <form class="form-inline">
+		<div class="form-group">
+			<div class="input-group">
+			  <div class="input-group-addon">이동시간</div>
+			  <input type="text" class="form-control" 
+			         id="period_time" ng-model="period_time" 
+					 placeholder="time count">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="input-group">
+			  <div class="input-group-addon">이동거리</div>
+			  <input type="text" class="form-control" 
+			         id="distance" ng-model="distance" 
+					 placeholder="distance count">
+			</div>
+		</div>
+		<button type="button" class="btn btn-primary"
+				ng-click="goForward()">정방향 이동</button>	
+		<button type="button" class="btn btn-primary"
+				ng-click="goBackward()">역방향 이동</button>	
+  </form>
   <hr style="border: solid 1px black;">
-  <h2> 정보 대기 중 </h2>
-  <hr style="border: solid 1px blue;">
+  <form class="form-inline">
+		<button type="button" class="btn btn-danger col-sm-2 col-sm-offset-4"
+				ng-click="goForward()">비상정지</button>	
+		<div class="col-sm-1"> </div>	
+		<button type="button" class="btn btn-warning col-sm-2"
+				ng-click="goBackward()">정지</button>	
+		<button type="button" class="btn btn-success col-sm-2"
+				ng-click="goBackward()">재개</button>	
+  </form>
+  <br>
+  <br>
+  
+  <hr style="border: solid 1px red;">
+  <h2> 처리 상태 </h2>
+  <hr style="border: solid 1px blue;margin-top:0;padding-top:0;">
+  <form class="form-inline">
+		<div class="form-group">
+			<div class="input-group">
+			  <div class="input-group-addon">이동방향</div>
+			  <input type="text" class="form-control" 
+			         id="direction" ng-model="period_time" 
+					 placeholder="direction">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="input-group">
+			  <div class="input-group-addon">이동시간</div>
+			  <input type="text" class="form-control" 
+			         id="period_time" ng-model="period_time" 
+					 placeholder="time count">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="input-group">
+			  <div class="input-group-addon">이동거리</div>
+			  <input type="text" class="form-control" 
+			         id="distance" ng-model="distance" 
+					 placeholder="distance count">
+			</div>
+		</div>
+  </form>
+  
+  <form class="form-horizontal">
+		<label  class="control-label">현재 진행 상태</label>
+		<uib-progressbar class="progress-striped active"
+							max="active_period_time"
+							value="active_period_count"
+							type="success">
+							<i>{{active_period_count}}/{{active_period_time}}</i>
+		</uib-progressbar>
+  </form>
+  
+  <hr style="border: solid 1px black;">
+  
+	<div class="list-group">
+	  <a class="list-group-item active">
+		<h4 class="list-group-item-heading">처리 대기중 목록</h4>
+	  </a>
+	  <a class="list-group-item">
+		<p class="list-group-item-text">정방향 이동 : 이동시간 30 / 이동거리 10</p>
+	  </a>
+	  <a class="list-group-item">
+		<p class="list-group-item-text">역방향 이동 : 이동시간 30 / 이동거리 2</p>
+	  </a>
+	</div>  
 
   <hr style="border: solid 1px red;">
 
