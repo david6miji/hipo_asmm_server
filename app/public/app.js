@@ -34,14 +34,15 @@ function( $stateProvider,  $urlRouterProvider,   $httpProvider) {
 	console.log( 'CALL app.config()' );
 	$stateProvider
 
-	.state('main', 			{ url: '/main', templateUrl: '/view/main.html',
-											controller: 'mainCtrl'				})
+	.state('main', 			{ url: '/main', 		templateUrl: '/view/main.html',
+													controller: 'mainCtrl'				})
 	
-//	.state('new', 			{ url: '/new', templateUrl: '/test_translated_helper/view/new.html',
-//											controller: 'newCtrl'				})
-//	
-//	.state('cvt', 			{ url: '/new', templateUrl: '/test_translated_helper/view/cvt.html',
-//											controller: 'cvtCtrl'				})
+	.state('cvt', 			{ url: '/asmm', 		templateUrl: '/view/asmm.html',
+													controller: 'asmmCtrl'				})
+
+	.state('sysfs_gpio', 	{ url: '/sysfs_gpio', 	templateUrl: '/view/sysfs_gpio.html',
+													controller: 'sysfsGpioCtrl'			})
+	
 	;
 	
 	$urlRouterProvider.otherwise('main');

@@ -3,9 +3,9 @@
 
 angular.module('hipoApp')
 
-.controller('mainCtrl',
+.controller('asmmCtrl',
 function( $scope, $http, $interval ) {
-	console.log( 'CALL mainCtrl' );
+	console.log( 'CALL asmmCtrl' );
 
 })
 
