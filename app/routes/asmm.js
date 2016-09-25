@@ -1,9 +1,29 @@
 var
 	express 	= require('express'),
 	router 		= express.Router(),
-//	sfg 		= require(__dirname + '/../sysfs_gpio'),
+	ASMM 		= require(__dirname + '/../asmm'),
 
 end_require= true;
+
+var assm = new ASMM(); 
+
+// var sysfs 	= require('./sysfs');
+// var 
+// 
+// var sysfs_test = new sysfs( "/sys/class/gpio" ); 
+// 
+// 	if( sysfs_test.accessOk() ){
+// 		console.log( "---- CALL sysfs_test.accessOk() is good" );
+// 	} else {
+// 		console.log( "---- CALL sysfs_test.accessOk() is no finding" );
+// 		
+// 	}
+// 	
+// 	var file_list = sysfs_test.readDir();
+// 	console.log( file_list );
+// 	
+// 	sysfs_test.readFile();
+// 	sysfs_test.writeFile();
 
 // const 	FORWARD_GPIO_INDEX 	= 37;
 // const 	BACKWARD_GPIO_INDEX = 36;

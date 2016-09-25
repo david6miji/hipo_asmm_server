@@ -30,6 +30,9 @@ function( $scope, $http, $interval ) {
 	var state_timer;
 	
 	state_timer = $interval( function () {
+		
+		return ;
+		
 		$http.get( "/asmm/state" )
 		.then(function( res ) {
 			console.log( "CALL API SUCESS : /asmm/state" );
@@ -53,6 +56,7 @@ function( $scope, $http, $interval ) {
 			console.log( "CALL API FAIL : /asmm/state" );
 			console.log( res.statusText );
 		});
+		
 	}, 100 );
 	
 	$scope.$on("$destroy", function(){
