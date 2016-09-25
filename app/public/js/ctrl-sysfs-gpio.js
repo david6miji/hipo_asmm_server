@@ -15,6 +15,31 @@ function( $scope, $http, $interval ) {
 	$scope.forward_rest_count  = 10;
 	$scope.backward_rest_count = 10;
 
+	var state_timer;
+	
+	state_timer = $interval( function () {
+//		console.log( "CALL ctrl-Main loop");
+		$http({
+			url: "/control/state",
+			method: "GET",
+		}).	success( function(data){
+
+//			console.log( "CALL API /control/state" );
+//			console.log(data);
+
+			$scope.forward_rest_count  = data.forward_count;
+			$scope.backward_rest_count = data.backward_count;
+		});
+	}, 100 );
+
+	$scope.$on("$destroy", function(){
+		console.log( "PAGE OUT" );
+		if (angular.isDefined(state_timer)) {
+            $interval.cancel(state_timer);
+            state_timer = undefined;
+        }
+    });
+	
 	$scope.goStop = function() {
 		console.log( "Stop" );
 
@@ -49,20 +74,6 @@ function( $scope, $http, $interval ) {
 
 	}
 
-	$interval( function () {
-//		console.log( "CALL ctrl-Main loop");
-		$http({
-			url: "/control/state",
-			method: "GET",
-		}).	success( function(data){
-
-//			console.log( "CALL API /control/state" );
-//			console.log(data);
-
-			$scope.forward_rest_count  = data.forward_count;
-			$scope.backward_rest_count = data.backward_count;
-		});
-	}, 100 );
 
 })
 

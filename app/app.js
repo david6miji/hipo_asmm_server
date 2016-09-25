@@ -9,6 +9,7 @@ var routes 	= require('./routes/index');
 var users 	= require('./routes/users');
 var test 	= require('./routes/test');
 var control = require('./routes/control');
+var asmm 	= require('./routes/asmm');
 
 var app = express();
 
@@ -24,8 +25,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/control', control);
+app.use('/'			, routes);
+app.use('/control'	, control);
+app.use('/asmm'		, asmm);
 
 // app.use('/users', users);
 // app.use('/test', test);
