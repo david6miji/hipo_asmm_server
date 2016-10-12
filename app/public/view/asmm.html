@@ -33,7 +33,7 @@
 				ng-click="goStop()">비상정지</button>	
 		<div class="col-sm-1"> </div>	
 		<button type="button" class="btn btn-warning col-sm-2"
-				ng-click="goPause()">정지</button>	
+				ng-click="goPause()">중지</button>	
 		<button type="button" class="btn btn-success col-sm-2"
 				ng-click="goResume()">재개</button>	
   </form>
@@ -44,27 +44,35 @@
   <h2> 처리 상태 </h2>
   <hr style="border: solid 1px blue;margin-top:0;padding-top:0;">
   <form class="form-inline">
-		<div class="form-group">
+		<div class="form-group col-sm-3">
 			<div class="input-group">
-			  <div class="input-group-addon">이동방향</div>
+			  <div class="input-group-addon">채널수</div>
 			  <input type="text" class="form-control" 
-			         id="direction" ng-model="current_direction" 
+			         id="channels" ng-model="channels" 
 					 placeholder="direction">
 			</div>
 		</div>
-		<div class="form-group">
+		<div class="form-group col-sm-3">
+			<div class="input-group">
+			  <div class="input-group-addon">동작</div>
+			  <input type="text" class="form-control" 
+			         id="progress" ng-model="state.active.progress" 
+					 placeholder="정지">
+			</div>
+		</div>
+		<div class="form-group col-sm-3">
 			<div class="input-group">
 			  <div class="input-group-addon">이동시간</div>
 			  <input type="text" class="form-control" 
-			         id="period_time" ng-model="current_time" 
+			         id="period_time" ng-model="state.active.period" 
 					 placeholder="time count">
 			</div>
 		</div>
-		<div class="form-group">
+		<div class="form-group col-sm-3">
 			<div class="input-group">
-			  <div class="input-group-addon">이동거리</div>
+			  <div class="input-group-addon">현재시간</div>
 			  <input type="text" class="form-control" 
-			         id="distance" ng-model="current_distance" 
+			         id="period_now" ng-model="state.active.present" 
 					 placeholder="distance count">
 			</div>
 		</div>
@@ -73,10 +81,10 @@
   <form class="form-horizontal">
 		<label  class="control-label">현재 진행 상태</label>
 		<uib-progressbar class="progress-striped active"
-							max="current_time"
-							value="current_present"
+							max="state.active.period"
+							value="state.active.present"
 							type="success">
-							<i>{{current_present}}/{{current_time}}</i>
+							<i>{{state.active.present}}/{{state.active.period}}</i>
 		</uib-progressbar>
   </form>
   

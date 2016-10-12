@@ -16,17 +16,34 @@ module.exports = class kmodule {
 	}
 	
 	lsmod(){
-		var out =  exec( "lsmod" ).toString();
+		let out = "";
+
+		try {
+			out =  exec( "lsmod" ).toString();
+		}catch(e){
+			out =  e.message;
+		}
+		
 		return out;
 	}
 	
 	insmod(){
-		var out =  exec( "insmod " + this.path ).toString();
+		let out = "";
+		try {
+			out =  exec( "insmod " + this.path ).toString();
+		}catch(e){
+			out =  e.message;
+		}
 		return out;
 	}
 	
 	rmmod(){
-		var out =  exec( "rmmod " + this.name ).toString();
+		let out = "";
+		try {
+			out =  exec( "rmmod " + this.name ).toString();
+		}catch(e){
+			out =  e.message;
+		}
 		return out;
 	}
 	
@@ -45,6 +62,3 @@ module.exports = class kmodule {
 		return find;
 	}
 }
-
-// export default sysfs;
-// module.exports = class sysfs {}

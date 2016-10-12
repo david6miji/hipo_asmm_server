@@ -7,13 +7,15 @@ angular.module('hipoApp')
 function( $scope, $http, $interval ) {
 	console.log( 'CALL asmmCtrl' );
 	
+	$scope.channels         = 0;
+
 	$scope.period_time  	= 10;
 	$scope.distance      	= 10;
 	
-	$scope.current_direction  	= "정방향";
-	$scope.current_time 		= 10;
-	$scope.current_distance 	= 10;
-	$scope.current_present		= 0;
+	$scope.active           = {};
+	$scope.active.period	= 0;
+	$scope.active.present	= 0;
+	$scope.active.progress 	= "???";
 
 	$scope.period_queue			= [
 //		{ seq : 0 , direction : "정지", time : 20, distance : 20 },
@@ -31,7 +33,7 @@ function( $scope, $http, $interval ) {
 	
 	state_timer = $interval( function () {
 		
-		return ;
+//		return ;
 		
 		$http.get( "/asmm/state" )
 		.then(function( res ) {
@@ -39,18 +41,26 @@ function( $scope, $http, $interval ) {
 //			console.log( res.data );
 			
 			var state = res.data;
-				
-			switch( state.current.direction ){
-			case "forward"  : $scope.current_direction  	= "정방향"; break;
-			case "backward" : $scope.current_direction  	= "역방향"; break;
-			case "stop" 	: $scope.current_direction  	= "정지"; break;
+			$scope.state = state;
+
+			switch( state.active.progress ){
+			case "run"      : $scope.state.active.progress  	= "동작"; break;
+			case "pause"    : $scope.state.active.progress  	= "중지"; break;
+			case "stop" 	: $scope.state.active.progress  	= "비상정지"; break;
 			default : $scope.current_direction  			= "에러"; break;
 			}
 			
-			$scope.current_time 		= state.current.time;
-			$scope.current_distance 	= state.current.distance;
-			$scope.current_present		= state.current.present;
-			$scope.period_queue			= state.period_queue;
+//			switch( state.current.direction ){
+//			case "forward"  : $scope.current_direction  	= "정방향"; break;
+//			case "backward" : $scope.current_direction  	= "역방향"; break;
+//			case "stop" 	: $scope.current_direction  	= "정지"; break;
+//			default : $scope.current_direction  			= "에러"; break;
+//			}
+//			
+//			$scope.current_time 		= state.current.time;
+//			$scope.current_distance 	= state.current.distance;
+//			$scope.current_present		= state.current.present;
+//			$scope.period_queue			= state.period_queue;
 			
 		},function(res){
 			console.log( "CALL API FAIL : /asmm/state" );
@@ -58,6 +68,21 @@ function( $scope, $http, $interval ) {
 		});
 		
 	}, 100 );
+	
+	$http.get( "/asmm/channels" )
+	.then(function( res ) {
+			console.log( "CALL API SUCESS : /asmm/channels" );
+			
+			var state = res.data;
+				
+			$scope.channels = state.channels;
+			console.log( state.channels );
+			
+		},function(res){
+			console.log( "CALL API FAIL : /asmm/channels" );
+			console.log( res.statusText );
+		});
+	
 	
 	$scope.$on("$destroy", function(){
 		console.log( "PAGE OUT" );

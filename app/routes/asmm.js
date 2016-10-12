@@ -6,8 +6,7 @@ var
 end_require= true;
 
 var assm = new ASMM(); 
-
-// var sysfs 	= require('./sysfs');
+// var 
 // var 
 // 
 // var sysfs_test = new sysfs( "/sys/class/gpio" ); 
@@ -30,6 +29,18 @@ var assm = new ASMM();
 
 // var gpio_forward 	= new sfg( FORWARD_GPIO_INDEX 	);
 // var gpio_backward 	= new sfg( BACKWARD_GPIO_INDEX 	);
+
+router.get('/channels', function(req, res, next) {
+
+	var state = {};
+
+	
+	state.result  = 'ok';
+	state.channels = assm.getChannels();
+	
+    res.json(state);
+	
+});
 
 router.post('/period_push', function(req, res, next) {
 
@@ -55,11 +66,8 @@ router.get('/state', function(req, res, next) {
 
 	state.result 			= 'ok';
 	
-	state.current           = {};
-	state.current.direction = "stop";
-	state.current.time      = 10;
-	state.current.distance  = 10;
-	state.current.present   = 3;
+	state.active            = JSON.parse( assm.getActive() );
+
 	state.period_queue		= [];
 	state.period_queue.push({ seq : 0 , direction : "정지", time : 20, distance : 20 }) ;
 	state.period_queue.push({ seq : 1 , direction : "정지", time : 20, distance : 20 }) ;
@@ -67,13 +75,14 @@ router.get('/state', function(req, res, next) {
 	state.period_queue.push({ seq : 3 , direction : "정지", time : 20, distance : 20 }) ;
 	state.period_queue.push({ seq : 4 , direction : "정지", time : 20, distance : 20 }) ;
 	state.period_queue.push({ seq : 5 , direction : "정지", time : 20, distance : 20 }) ;
-	
+
 //	state.forward_count 	= parseInt(gpio_forward.count/2);
 //	state.backward_count 	= parseInt(gpio_backward.count/2);
 
 	console.log( state );
+
     res.json(state);
-	
+
 });
 
 module.exports = router;

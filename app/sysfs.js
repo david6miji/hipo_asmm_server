@@ -22,10 +22,15 @@ module.exports = class sysfs {
 	}
 	
 	readFile() {
-		console.log( "CALL readFile function ---------------");
-		return "read ok";
+		return fs.readFileSync( this.path, "utf8" );
 	}
 	
+	readInteger() {
+		var ret = this.readFile()
+		console.log( "ret = ", ret );
+		return  Number(ret);
+	}
+
 	writeFile() {
 		console.log( "CALL writeFile function ---------------");
 		return "write ok";
