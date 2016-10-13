@@ -67,19 +67,21 @@ router.get('/state', function(req, res, next) {
 	state.result 			= 'ok';
 	
 	state.active            = JSON.parse( assm.getActive() );
+	state.list              = JSON.parse( assm.getList() );
 
-	state.period_queue		= [];
-	state.period_queue.push({ seq : 0 , direction : "정지", time : 20, distance : 20 }) ;
-	state.period_queue.push({ seq : 1 , direction : "정지", time : 20, distance : 20 }) ;
-	state.period_queue.push({ seq : 2 , direction : "정지", time : 20, distance : 20 }) ;
-	state.period_queue.push({ seq : 3 , direction : "정지", time : 20, distance : 20 }) ;
-	state.period_queue.push({ seq : 4 , direction : "정지", time : 20, distance : 20 }) ;
-	state.period_queue.push({ seq : 5 , direction : "정지", time : 20, distance : 20 }) ;
+//	state.period_queue		= [];
+//	state.period_queue.push({ seq : 0 , direction : "정지", time : 20, distance : 20 }) ;
+//	state.period_queue.push({ seq : 1 , direction : "정지", time : 20, distance : 20 }) ;
+//	state.period_queue.push({ seq : 2 , direction : "정지", time : 20, distance : 20 }) ;
+//	state.period_queue.push({ seq : 3 , direction : "정지", time : 20, distance : 20 }) ;
+//	state.period_queue.push({ seq : 4 , direction : "정지", time : 20, distance : 20 }) ;
+//	state.period_queue.push({ seq : 5 , direction : "정지", time : 20, distance : 20 }) ;
 
+	
 //	state.forward_count 	= parseInt(gpio_forward.count/2);
 //	state.backward_count 	= parseInt(gpio_backward.count/2);
 
-	console.log( state );
+//	console.log( state );
 
     res.json(state);
 

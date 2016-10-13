@@ -2,31 +2,58 @@
 
   <h1>ASMM - AC Servo Motor Manager Test</h1>
   <hr style="border: solid 1px red;margin-top:0;padding-top:0;">
-  <h2> 조작 </h2>
-  <hr style="border: solid 1px blue;margin-top:0;padding-top:0;">
+
+  <form class="form-inline" ng-repeat="(key, channel) in control.channels" >
+		<div class="form-group col-sm-2">
+			<div class="input-group input-group-sm">
+			  <div class="input-group-addon">채널</div>
+			  <input type="text" class="form-control" 
+			         id="channel.channel" ng-model="channel.channel" >
+			</div>
+		</div>
+		
+		<div class="form-group col-sm-3">
+			<div class="input-group input-group-sm ">
+			  <div class="input-group-addon">이동거리</div>
+			  <input type="text" class="form-control" 
+			         id="distance" ng-model="channel.distance" >
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="input-group input-group-sm">
+			  <div class="input-group-addon">이동방향</div>
+			  <input type="text" class="form-control" 
+			         id="direction" ng-model="channel.direction" >
+			  <span class="input-group-btn">
+			     <button type="button" class="btn btn-primary"
+				     ng-click="goForward(key)">정방향 이동</button>
+				 <button type="button" class="btn btn-primary"
+				     ng-click="goBackward(key)">역방향 이동</button>	
+			  </span>			
+					 
+			</div>
+		</div>
+		
+  </form>
+  <br>
+  <!--hr style="border: solid 1px black;"-->
   
   <form class="form-inline">
 		<div class="form-group">
 			<div class="input-group">
 			  <div class="input-group-addon">이동시간</div>
 			  <input type="text" class="form-control" 
-			         id="period_time" ng-model="period_time" 
-					 placeholder="time count">
+			         id="period_time" ng-model="control.period_time" 
+					 placeholder="10">
 			</div>
 		</div>
-		<div class="form-group">
-			<div class="input-group">
-			  <div class="input-group-addon">이동거리</div>
-			  <input type="text" class="form-control" 
-			         id="distance" ng-model="distance" 
-					 placeholder="distance count">
-			</div>
-		</div>
+		<div class="col-sm-3"> </div>	
 		<button type="button" class="btn btn-primary"
-				ng-click="goForward()">정방향 이동</button>	
-		<button type="button" class="btn btn-primary"
-				ng-click="goBackward()">역방향 이동</button>	
+				ng-click="goPush()">적용</button>	
   </form>
+  
+  
   <hr style="border: solid 1px black;">
   <form class="form-inline">
 		<button type="button" class="btn btn-danger col-sm-2 col-sm-offset-4"
@@ -45,7 +72,7 @@
   <hr style="border: solid 1px blue;margin-top:0;padding-top:0;">
   <form class="form-inline">
 		<div class="form-group col-sm-3">
-			<div class="input-group">
+			<div class="input-group input-group-sm">
 			  <div class="input-group-addon">채널수</div>
 			  <input type="text" class="form-control" 
 			         id="channels" ng-model="channels" 
@@ -53,7 +80,7 @@
 			</div>
 		</div>
 		<div class="form-group col-sm-3">
-			<div class="input-group">
+			<div class="input-group input-group-sm">
 			  <div class="input-group-addon">동작</div>
 			  <input type="text" class="form-control" 
 			         id="progress" ng-model="state.active.progress" 
@@ -61,7 +88,7 @@
 			</div>
 		</div>
 		<div class="form-group col-sm-3">
-			<div class="input-group">
+			<div class="input-group input-group-sm">
 			  <div class="input-group-addon">이동시간</div>
 			  <input type="text" class="form-control" 
 			         id="period_time" ng-model="state.active.period" 
@@ -69,10 +96,50 @@
 			</div>
 		</div>
 		<div class="form-group col-sm-3">
-			<div class="input-group">
+			<div class="input-group input-group-sm">
 			  <div class="input-group-addon">현재시간</div>
 			  <input type="text" class="form-control" 
 			         id="period_now" ng-model="state.active.present" 
+					 placeholder="distance count">
+			</div>
+		</div>
+  </form>
+  
+  <br>
+  <br>
+  
+  <hr style="border: solid 1px gray;margin-top:0;padding-top:0;">
+  
+  <form class="form-inline" ng-repeat="(key, value) in state.active.channels">
+		<div class="form-group col-sm-3">
+			<div class="input-group input-group-sm">
+			  <div class="input-group-addon">채널</div>
+			  <input type="text" class="form-control" 
+			         id="channel" ng-model="value.channel" 
+					 placeholder="direction">
+			</div>
+		</div>
+		<div class="form-group col-sm-3">
+			<div class="input-group input-group-sm">
+			  <div class="input-group-addon">방향</div>
+			  <input type="text" class="form-control" 
+			         id="progress" ng-model="value.direction" 
+					 placeholder="정지">
+			</div>
+		</div>
+		<div class="form-group col-sm-3">
+			<div class="input-group input-group-sm">
+			  <div class="input-group-addon">거리</div>
+			  <input type="text" class="form-control" 
+			         id="period_time" ng-model="value.distance" 
+					 placeholder="time count">
+			</div>
+		</div>
+		<div class="form-group col-sm-3">
+			<div class="input-group input-group-sm">
+			  <div class="input-group-addon">이동</div>
+			  <input type="text" class="form-control" 
+			         id="period_now" ng-model="value.move" 
 					 placeholder="distance count">
 			</div>
 		</div>
@@ -95,8 +162,13 @@
 		<h4 class="list-group-item-heading">처리 대기중 목록</h4>
 	  </a>
 	  
-	  <a class="list-group-item" ng-repeat="(key, value) in period_queue" >
-		<p class="list-group-item-text">NO : {{value.seq}} / 방향 : {{value.direction}} / 이동시간 : {{value.time}} / 이동거리 : {{value.distance}}</p>
+	  <a class="list-group-item" ng-repeat="(key, item) in state.list" >
+		<p class="list-group-item-text">
+		    NO : {{item.seq}} / 시간 : {{item.period}}
+		</p>
+		<p class="list-group-item-text" ng-repeat="(key, value) in item.channels">
+		    >>> CHANNEL : {{value.channel}} / 방향 : {{value.direction}} / 거리 : {{value.distance}}
+		</p>
 	  </a>
 	</div>  
 

@@ -16,6 +16,7 @@ module.exports = class asmm {
 		this.sys_root 		= "/sys/class/asmm";
 		this.sys_channels	= "/sys/class/asmm/channels";
 		this.sys_active		= "/sys/class/asmm/active";
+		this.sys_list 		= "/sys/class/asmm/list";
 		
 		this.module = new kmodule( this.kmodule_name, this.kmodule_path );
 		
@@ -50,6 +51,12 @@ module.exports = class asmm {
 		return active.readFile();
 	}
 	
+	getList(){
+		
+		var list = new sysfs( this.sys_list );
+		
+		return list.readFile();
+	}
 
 }
 

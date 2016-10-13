@@ -7,23 +7,28 @@ angular.module('hipoApp')
 function( $scope, $http, $interval ) {
 	console.log( 'CALL asmmCtrl' );
 	
-	$scope.channels         = 0;
+	$scope.channels         	= 1;
 
-	$scope.period_time  	= 10;
-	$scope.distance      	= 10;
+	$scope.control          	= {};
+	$scope.control.period_time  = 10;
+	$scope.control.channels     = [];
+	$scope.control.channels[0]  = {};
+	$scope.control.channels[0].channel   = 0;
+	$scope.control.channels[0].direction = "forward";
+	$scope.control.channels[0].distance  = 10;
 	
 	$scope.active           = {};
 	$scope.active.period	= 0;
 	$scope.active.present	= 0;
 	$scope.active.progress 	= "???";
 
-	$scope.period_queue			= [
-//		{ seq : 0 , direction : "정지", time : 20, distance : 20 },
-//		{ seq : 1 , direction : "정지", time : 20, distance : 20 },
-//		{ seq : 2 , direction : "정지", time : 20, distance : 20 },
-//		{ seq : 3 , direction : "정지", time : 20, distance : 20 },
-//		{ seq : 4 , direction : "정지", time : 20, distance : 20 },
-	];
+// 	$scope.period_queue			= [
+// //		{ seq : 0 , direction : "정지", time : 20, distance : 20 },
+// //		{ seq : 1 , direction : "정지", time : 20, distance : 20 },
+// //		{ seq : 2 , direction : "정지", time : 20, distance : 20 },
+// //		{ seq : 3 , direction : "정지", time : 20, distance : 20 },
+// //		{ seq : 4 , direction : "정지", time : 20, distance : 20 },
+// 	];
 	
 	$scope.$on('$locationChangeStart', function (event, next, current) {
 		console.log( "PAGE IN" );
@@ -37,31 +42,44 @@ function( $scope, $http, $interval ) {
 		
 		$http.get( "/asmm/state" )
 		.then(function( res ) {
-			console.log( "CALL API SUCESS : /asmm/state" );
+//			console.log( "CALL API SUCESS : /asmm/state" );
 //			console.log( res.data );
 			
 			var state = res.data;
 			$scope.state = state;
 
 			switch( state.active.progress ){
-			case "run"      : $scope.state.active.progress  	= "동작"; break;
-			case "pause"    : $scope.state.active.progress  	= "중지"; break;
+			case "run"		: $scope.state.active.progress  	= "동작"; break;
+			case "pause"	: $scope.state.active.progress  	= "중지"; break;
 			case "stop" 	: $scope.state.active.progress  	= "비상정지"; break;
-			default : $scope.current_direction  			= "에러"; break;
+			default			: $scope.state.active.progress 		= "에러"; break;
 			}
 			
-//			switch( state.current.direction ){
-//			case "forward"  : $scope.current_direction  	= "정방향"; break;
-//			case "backward" : $scope.current_direction  	= "역방향"; break;
-//			case "stop" 	: $scope.current_direction  	= "정지"; break;
-//			default : $scope.current_direction  			= "에러"; break;
-//			}
-//			
-//			$scope.current_time 		= state.current.time;
-//			$scope.current_distance 	= state.current.distance;
-//			$scope.current_present		= state.current.present;
-//			$scope.period_queue			= state.period_queue;
+			for (var i = 0; i < state.active.channels.length; i++) { 
+				switch( state.active.channels[i].direction ){
+				case "forward"  : $scope.state.active.channels[i].direction  	= "정방향"; break;
+				case "backward" : $scope.state.active.channels[i].direction  	= "역방향"; break;
+				case "stop" 	: $scope.state.active.channels[i].direction  		= "정지"; break;
+				default 		: $scope.state.active.channels[i].direction  		= "에러"; break;
+				}
+			}
 			
+			state.list.forEach( function (period,period_index) {
+				period.channels.forEach( function (channel,channel_index) {
+					var str = "에러";
+
+					switch( channel.direction ){
+					case "forward"  : str = "정방향"; break;
+					case "backward" : str = "역방향"; break;
+					case "stop" 	: str = "정지"; break;
+					default 		: str = "에러"; break;
+					}
+					$scope.state.list[period_index].channels[channel_index].direction = str;
+				});
+				
+			});
+
+
 		},function(res){
 			console.log( "CALL API FAIL : /asmm/state" );
 			console.log( res.statusText );
@@ -71,12 +89,18 @@ function( $scope, $http, $interval ) {
 	
 	$http.get( "/asmm/channels" )
 	.then(function( res ) {
-			console.log( "CALL API SUCESS : /asmm/channels" );
+//			console.log( "CALL API SUCESS : /asmm/channels" );
 			
 			var state = res.data;
 				
 			$scope.channels = state.channels;
-			console.log( state.channels );
+//			console.log( state.channels );
+			
+			$scope.control.channels     = [];
+			for (var i = 0; i < $scope.channels; i++) { 
+				var item = { channel : i, direction : "정방향", distance : 0 };
+				$scope.control.channels.push( item );
+			}
 			
 		},function(res){
 			console.log( "CALL API FAIL : /asmm/channels" );
@@ -92,12 +116,7 @@ function( $scope, $http, $interval ) {
         }
     });
 	
-	var pushPeriod = function( direction ) {
-		var onePeriod = {
-			period_time : $scope.period_time,
-			distance    : $scope.distance,
-			direction	: direction,
-		};
+	var pushPeriod = function( onePeriod ) {
 
 		$http.post( "/asmm/period_push", onePeriod )
 		.then(function( res ) {
@@ -111,14 +130,31 @@ function( $scope, $http, $interval ) {
 		
 	}
 	
-	$scope.goForward = function() {
-		console.log( "PUSH Forward" );
-		pushPeriod( "forward" );
+	$scope.goForward = function(index) {
+		$scope.control.channels[index].direction = "정방향";
 	}
 	
-	$scope.goBackward = function() {
-		console.log( "PUSH Backward" );
-		pushPeriod( "backrward" );
+	$scope.goBackward = function(index) {
+		$scope.control.channels[index].direction = "역방향";
+	}
+
+	$scope.goPush = function(index) {
+//		
+		console.log( "CALL PUSH" );
+		var period = $scope.control;
+		
+		period.channels.forEach( function (channel,channel_index) {
+			var str = "forward";
+
+			switch( channel.direction ){
+			case "정방향"  : str = "forward"; break;
+			case "역방향" : str = "backward"; break;
+			}
+			channel.direction = str;
+		});
+		
+		pushPeriod( period );
+		
 	}
 	
 	var control = function( action ) {
