@@ -14,7 +14,7 @@ function( $scope, $http, $interval ) {
 	$scope.control.channels     = [];
 	$scope.control.channels[0]  = {};
 	$scope.control.channels[0].channel   = 0;
-	$scope.control.channels[0].direction = "forward";
+	$scope.control.channels[0].direction = "정방향";
 	$scope.control.channels[0].distance  = 10;
 	
 	$scope.active           = {};
@@ -22,14 +22,6 @@ function( $scope, $http, $interval ) {
 	$scope.active.present	= 0;
 	$scope.active.progress 	= "???";
 
-// 	$scope.period_queue			= [
-// //		{ seq : 0 , direction : "정지", time : 20, distance : 20 },
-// //		{ seq : 1 , direction : "정지", time : 20, distance : 20 },
-// //		{ seq : 2 , direction : "정지", time : 20, distance : 20 },
-// //		{ seq : 3 , direction : "정지", time : 20, distance : 20 },
-// //		{ seq : 4 , direction : "정지", time : 20, distance : 20 },
-// 	];
-	
 	$scope.$on('$locationChangeStart', function (event, next, current) {
 		console.log( "PAGE IN" );
 	});
@@ -48,10 +40,12 @@ function( $scope, $http, $interval ) {
 			var state = res.data;
 			$scope.state = state;
 
+//			console.log( state );
+
 			switch( state.active.progress ){
 			case "run"		: $scope.state.active.progress  	= "동작"; break;
 			case "pause"	: $scope.state.active.progress  	= "중지"; break;
-			case "stop" 	: $scope.state.active.progress  	= "비상정지"; break;
+			case "stop" 	: $scope.state.active.progress  	= "정지"; break;
 			default			: $scope.state.active.progress 		= "에러"; break;
 			}
 			
@@ -59,8 +53,8 @@ function( $scope, $http, $interval ) {
 				switch( state.active.channels[i].direction ){
 				case "forward"  : $scope.state.active.channels[i].direction  	= "정방향"; break;
 				case "backward" : $scope.state.active.channels[i].direction  	= "역방향"; break;
-				case "stop" 	: $scope.state.active.channels[i].direction  		= "정지"; break;
-				default 		: $scope.state.active.channels[i].direction  		= "에러"; break;
+				case "stop" 	: $scope.state.active.channels[i].direction  	= "정지"; break;
+				default 		: $scope.state.active.channels[i].direction  	= "에러"; break;
 				}
 			}
 			
@@ -141,7 +135,9 @@ function( $scope, $http, $interval ) {
 	$scope.goPush = function(index) {
 //		
 		console.log( "CALL PUSH" );
-		var period = $scope.control;
+		var period ={};
+		
+		angular.copy( $scope.control, period );
 		
 		period.channels.forEach( function (channel,channel_index) {
 			var str = "forward";

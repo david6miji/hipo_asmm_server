@@ -6,9 +6,7 @@ var
 end_require= true;
 
 var assm = new ASMM(); 
-// var 
-// var 
-// 
+
 // var sysfs_test = new sysfs( "/sys/class/gpio" ); 
 // 
 // 	if( sysfs_test.accessOk() ){
@@ -34,7 +32,6 @@ router.get('/channels', function(req, res, next) {
 
 	var state = {};
 
-	
 	state.result  = 'ok';
 	state.channels = assm.getChannels();
 	
@@ -48,6 +45,17 @@ router.post('/period_push', function(req, res, next) {
 	
 	console.log( onePeriod );
 	
+	assm.beginPeriod( onePeriod.period_time );
+	
+	onePeriod.channels.forEach( function (channel,channel_index) {
+	
+		assm.selectChannel	( channel.channel 	);
+		assm.setDirection	( channel.direction );
+		assm.setDistance	( channel.distance 	);
+	});
+	
+	assm.pushPeriod();
+	
 	res.send('ok period_push');
 });
 
@@ -56,7 +64,13 @@ router.post('/control', function(req, res, next) {
 	var oneControl = req.body;
 	
 	console.log( oneControl );
-	
+	switch( oneControl.action ){
+	case 'stop'     : assm.stop(); 	
+					   assm.flush();	break;
+	case 'pause'    : assm.stop(); 	break;
+	case 'resume'   : assm.resume(); 	break;
+	}
+
 	res.send('ok control');
 });
 
@@ -68,20 +82,6 @@ router.get('/state', function(req, res, next) {
 	
 	state.active            = JSON.parse( assm.getActive() );
 	state.list              = JSON.parse( assm.getList() );
-
-//	state.period_queue		= [];
-//	state.period_queue.push({ seq : 0 , direction : "정지", time : 20, distance : 20 }) ;
-//	state.period_queue.push({ seq : 1 , direction : "정지", time : 20, distance : 20 }) ;
-//	state.period_queue.push({ seq : 2 , direction : "정지", time : 20, distance : 20 }) ;
-//	state.period_queue.push({ seq : 3 , direction : "정지", time : 20, distance : 20 }) ;
-//	state.period_queue.push({ seq : 4 , direction : "정지", time : 20, distance : 20 }) ;
-//	state.period_queue.push({ seq : 5 , direction : "정지", time : 20, distance : 20 }) ;
-
-	
-//	state.forward_count 	= parseInt(gpio_forward.count/2);
-//	state.backward_count 	= parseInt(gpio_backward.count/2);
-
-//	console.log( state );
 
     res.json(state);
 

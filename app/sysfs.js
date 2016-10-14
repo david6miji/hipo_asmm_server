@@ -31,9 +31,21 @@ module.exports = class sysfs {
 		return  Number(ret);
 	}
 
-	writeFile() {
-		console.log( "CALL writeFile function ---------------");
+	writeFile(data) {
+		fs.writeFileSync( this.path, data, "utf8" );
 		return "write ok";
+	}
+	
+	writeInteger( value ) {
+		var str = "";
+		str = str + value;
+		return this.writeFile(str);
+	}
+
+	writeString( value ) {
+		var str = "";
+		str = str + value;
+		return this.writeFile(str);
 	}
 	
 	isDirectory() {
@@ -72,6 +84,3 @@ module.exports = class sysfs {
 		return list;
 	}
 }
-
-// export default sysfs;
-// module.exports = class sysfs {}
